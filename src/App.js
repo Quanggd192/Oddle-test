@@ -1,22 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.scss";
+import { Switch, Route, BrowserRouter } from "react-router-dom";
+import history from './history';
+import Navbar from "./container/GitUsers/Navbar";
+import ListUsers from "./container/GitUsers/ListUsers";
+import UserInfo from "./container/GitUsers/UserInfo";
+import { useSelector } from "react-redux";
 
 function App() {
+  const loading = useSelector((state) => state.loading);
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <Navbar />
+        <br/>
+        {loading ? <div className="loader-container">
+          <div className="loader"></div>
+        </div> : null}
+        <BrowserRouter history={history}>
+          <Switch>
+            <Route path="/user/:login" component={UserInfo} />
+            <Route path="/:query" component={ListUsers} />
+            <Route path="/" component={ListUsers} />
+          </Switch>
+        </BrowserRouter>
       </header>
     </div>
   );
